@@ -1,0 +1,286 @@
+/* ============RESPONSIVE BREAKPOINTS============ */
+
+/* Tablet and above: 1024px */
+@media (max-width: 1024px) {
+  .milestones-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .milestones-left {
+    position: static;
+  }
+
+  .origin-layout,
+  .craft-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .origin-left,
+  .craft-left,
+  .exp-feature-left {
+    position: static;
+  }
+
+  .origin-stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .origin-stat {
+    flex: 1;
+    min-width: 120px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exp-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .project-row {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .project-row-visual {
+    display: none;
+  }
+
+  .signal-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet: 768px and below */
+@media (max-width: 768px) {
+  .cert-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .milestone-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-chapters {
+    display: none;
+  }
+
+  .act-heading {
+    font-size: clamp(3rem, 10vw, 5rem);
+  }
+
+  .title-word {
+    font-size: clamp(4rem, 18vw, 8rem);
+  }
+
+  .title-row-indent {
+    padding-left: clamp(1.5rem, 6vw, 5rem);
+  }
+
+  .education-strip {
+    flex-direction: column;
+  }
+
+  .edu-divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .project-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .project-row-number {
+    font-size: 3.5rem;
+  }
+
+  .filmstrip span:nth-child(n + 9) {
+    display: none;
+  }
+
+  .signal-credits {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .nav {
+    transform: none !important;
+  }
+}
+
+/* Mobile: 530px and below */
+@media (max-width: 530px) {
+  .scroll-prompt-track {
+    height: 30px;
+  }
+
+  .watermark {
+    font-size: 8rem;
+  }
+
+  .nav {
+    padding: 0 20px;
+  }
+
+  .nav-actions {
+    display: flex;
+  }
+
+  .nav-actions .nav-cta {
+    display: none;
+  }
+
+  .act-open {
+    overflow: visible;
+  }
+
+  .act {
+    padding: 25px 20px;
+    min-height: 90svh;
+  }
+
+  .act-label {
+    display: none;
+  }
+
+  .filmstrip {
+    bottom: -40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scroll-prompt {
+    right: 16px;
+    bottom: 5.5rem;
+  }
+
+  .filmstrip span,
+  .small {
+    font-size: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+  }
+
+  .stat-num {
+    margin-bottom: -0.5rem;
+  }
+
+  .origin-stat,
+  .project-row,
+  .signal-link {
+    padding: 1rem 0;
+  }
+
+  .origin-layout,
+  .craft-layout,
+  .origin-paragraph,
+  .exp-feature,
+  .project-row,
+  .milestones-layout,
+  .signal-layout {
+    gap: 1rem;
+  }
+
+  .open-title,
+  .open-descriptor,
+  .act-heading,
+  .origin-paragraph,
+  .project-row-header {
+    margin-bottom: 1rem;
+  }
+
+  .origin-paragraph p,
+  .exp-desc,
+  .project-story,
+  .craft-sub,
+  .milestones-sub,
+  .milestone-story,
+  .signal-sub {
+    line-height: 1.4;
+  }
+
+  .origin-stats,
+  .education-strip,
+  .milestones-sub {
+    margin-top: 1rem;
+  }
+
+  .act-heading {
+    margin-top: 3rem;
+  }
+
+  .origin-quote {
+    margin: 2rem 0;
+  }
+
+  .origin-quote,
+  .edu-card,
+  .exp-block {
+    padding: 2rem 1.5rem;
+  }
+
+  .work-exp-label,
+  .work-proj-label {
+    margin-bottom: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  .exp-block-header {
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .work-experience {
+    margin: 0 auto 3rem;
+  }
+
+  .craft-layout,
+  .milestones-left .act-heading,
+  .milestone-card-header,
+  .milestone-card h3 {
+    margin: 0;
+  }
+
+  .work-projects .act-heading {
+    margin: 1.5rem 0 !important;
+  }
+
+  .project-row-header {
+    gap: 0;
+    flex-direction: column;
+  }
+
+  .signal-credits {
+    padding: 0;
+    align-items: center;
+    gap: 0.1rem;
+    text-align: center;
+    border: none;
+  }
+
+  .signal-heading {
+    margin-bottom: 0;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .watermark {
+    font-size: 6rem;
+  }
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

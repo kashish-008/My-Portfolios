@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kashish Thakur - Frontend Developer</title>
+  <meta name="description"
+    content="Kashish Thakur. MCA Graduate student. Aspiring frontend developer. Builder of things that move." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap"
+    rel="stylesheet" />
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/resp.css" />
+
+  <!-- Theme Toggle FOUC prevention -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("portfolio-theme") || "dark";
+      if (savedTheme === "light") {
+        document.documentElement.classList.add("light-theme");
+      }
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- NOISE GRAIN OVERLAY -->
+  <div class="grain"></div>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor">
+    <div class="cursor-inner"></div>
+    <div class="cursor-dot"></div>
+  </div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-bar" id="loaderBar"></div>
+    <div class="loader-text">
+      <span id="loaderCount">00</span>
+      <span class="loader-label">/ Loading</span>
+    </div>
+  </div>
+
+  <div id="app-content">
+    <!-- Navbar -->
+    <nav class="nav" id="nav">
+      <a href="#open" class="nav-logo">
+        <span>K</span><span class="nav-logo-sep">·</span><span>T</span>
+      </a>
+
+      <div class="nav-chapters" id="navChapters">
+        <span class="nav-chapter active" data-target="open">I</span>
+        <span class="nav-chapter" data-target="origin">II</span>
+        <span class="nav-chapter" data-target="work">III</span>
+        <span class="nav-chapter" data-target="craft">IV</span>
+        <span class="nav-chapter" data-target="milestones">V</span>
+        <span class="nav-chapter" data-target="signal">VI</span>
+      </div>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sun-icon">
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="moon-icon">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" fill="none" />
+          </svg>
+        </button>
+        <a href="./certificates/resume.pdf" class="nav-cta nav-cta-secondary nav-cert-link" data-cert="resume"
+          rel="noopener noreferrer">
+          Resume
+        </a>
+        <a href="mailto:abhimanhas2132@gmail.com" class="nav-cta" target="_blank" rel="noopener noreferrer">
+          Hire Me
+        </a>
+      </div>
+    </nav>
+
+    <!-- ACT I - OPEN -->
+    <section class="act act-open" id="open">
+
+      <!-- Horizontal scan lines (cinematic texture) -->
+      <div class="scanlines"></div>
+
+      <!-- Background text watermark -->
+      <div class="watermark">DEVELOPER</div>
+
+      <div class="open-content">
+
+        <div class="open-eyebrow">
+          <span class="mono">Chapter I</span>
+          <span class="open-line"></span>
+          <span class="mono">A Story Begins</span>
+        </div>
+
+        <h1 class="open-title" aria-label="Kashish Thakur">
+          <div class="title-row">
+            <span class="title-word" data-word="KASHISH">KASHISH</span>
+          </div>
+          <div class="title-row title-row-indent">
+            <span class="title-word title-word-outline" data-word="THAKUR">THAKUR</span>
+          </div>
+        </h1>
+
+        <div class="open-descriptor">
+          <p class="open-role">Frontend Developer &amp; MCA Student</p>
+          <p class="open-tagline">
+            Building interfaces that feel <em>alive</em>.
+          </p>
+        </div>
+
+        <div class="open-meta">
+          <span class="mono small">Punjab, India</span>
+          <span class="open-dot"></span>
+          <span class="mono small">Available for opportunities</span>
+          <span class="open-dot"></span>
+          <span class="mono small">2026</span>
+        </div>
+
+      </div>
+
+      <!-- Scroll prompt -->
+      <div class="scroll-prompt">
+        <div class="scroll-prompt-track">
+          <div class="scroll-prompt-thumb"></div>
+        </div>
+        <span class="mono small">Scroll to continue</span>
+      </div>
+
+      <!-- Bottom film strip -->
+      <div class="filmstrip">
+        <span>HTML</span><span>CSS</span><span>JS</span><span>REACT</span>
+        <span>GSAP</span><span>GIT</span><span>PYTHON</span>
+        <span>HTML</span><span>CSS</span><span>JS</span><span>REACT</span>
+      </div>
+
+    </section>
+
+    <!-- ACT II - ORIGIN -->
+    <section class="act act--origin" id="origin">
+
+      <div class="act-label">
+        <span class="mono">Chapter II---About</span>
+      </div>
+
+      <div class="origin-layout">
+
+        <div class="origin-left">
+          <h2 class="act-heading">
+            <span class="reveal-line">The</span>
+            <span class="reveal-line">Origin</span>
+            <span class="reveal-line reveal-line-accent">Story.</span>
+          </h2>
+
+          <!-- Vertical timeline of stats -->
+          <div class="origin-stats">
+            <div class="origin-stat">
+              <span class="stat-num" data-count="8.1" data-suffix>8.1</span>
+              <span class="stat-label">SGPA · MCA</span>
+            </div>
+            <div class="origin-stat">
+              <span class="stat-num" data-count="45" data-suffix="+">45+</span>
+              <span class="stat-label">Days MERN Training</span>
+            </div>
+            <div class="origin-stat">
+              <span class="stat-num" data-count="6" data-suffix="mo">6mo</span>
+              <span class="stat-label">Corporate Experience</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="origin-right">
+
+          <div class="origin-paragraph reveal-para">
+            <span class="para-number mono">01</span>
+            <p>
+              Every developer has a moment - the first time a line of code did
+              exactly what they told it to. For Kashish Thakur, that moment
+              became an obsession.
+            </p>
+          </div>
+
+          <div class="origin-paragraph reveal-para">
+            <span class="para-number mono">02</span>
+            <p>
+              Studying MCA at CGC Landran with an 8.1 SGPA, he's not just
+              collecting grades - he's building a foundation. Hands-on MERN
+              training. Six months inside Cognessol's data operations. Real
+              work. Real pressure.
+            </p>
+          </div>
+
+          <div class="origin-paragraph reveal-para">
+            <span class="para-number mono">03</span>
+            <p>
+              Detail-oriented by nature, adaptable by experience. The kind of
+              developer who watches Christopher Nolan films not just for the
+              story - but to study how layers of complexity can feel effortless
+              to the audience.
+            </p>
+          </div>
+
+          <div class="origin-paragraph reveal-para">
+            <span class="para-number mono">04</span>
+            <p>
+              Currently hunting for opportunities where code meets
+              creativity.
+              Remote or in-office - doesn't matter. What matters
+              is building
+              something that <em>moves</em> people.
+            </p>
+          </div>
+
+          <div class="origin-quote reveal-para">
+            <blockquote>
+              "The interface is the story.<br />Every animation is a sentence."
+            </blockquote>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Education cards - horizontal -->
+      <div class="education-strip">
+        <div class="edu-card reveal-card">
+          <span class="edu-year mono">2024 - 2026</span>
+          <h3>Master of Computer Applications</h3>
+          <p>CGC Landran</p>
+          <span class="edu-grade">SGPA 8.1</span>
+        </div>
+        <div class="edu-divider"></div>
+        <div class="edu-card reveal-card">
+          <span class="edu-year mono">2020 - 2023</span>
+          <h3>Bachelor of Computer Applications</h3>
+          <p>SPN College</p>
+          <span class="edu-grade">CGPA 7.7</span>
+        </div>
+        <div class="edu-divider"></div>
+        <div class="edu-card reveal-card">
+          <span class="edu-year mono">2019 - 2020</span>
+          <h3>12th <br> Non-Medical</h3>
+          <p>ASS School</p>
+          <span class="edu-grade">CGPA 8.2</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ACT III - WORK -->
+    <section class="act act--work" id="work">
+
+      <div class="act-label">
+        <span class="mono">Chapter III---Experience + Projects</span>
+      </div>
+
+      <!-- Experience -->
+      <div class="work-experience">
+        <div class="work-exp-label">
+          <span class="mono">Experience</span>
+        </div>
+
+        <div class="exp-feature">
+          <div class="exp-feature-left">
+            <h2 class="act-heading act-heading-sm">
+              <span class="reveal-line">Where the</span>
+              <span class="reveal-line">story got</span>
+              <span class="reveal-line reveal-line-accent">real.</span>
+            </h2>
+          </div>
+
+          <div class="exp-feature-right">
+            <div class="exp-block reveal-block">
+              <div class="exp-block-header">
+                <div>
+                  <h3>Data Management Role</h3>
+                  <span class="exp-company">Cognessol</span>
+                </div>
+                <span class="exp-date mono">Jan 2024 - Jul 2024</span>
+              </div>
+              <p class="exp-desc">
+                Six months inside a real company. Not a tutorial, not a project
+                - actual work. Improved data organization that impacted real
+                business decisions. Collaborated with cross-functional teams
+                under deadlines. Learned that discipline is the foundation of
+                everything.
+              </p>
+              <div class="exp-tags">
+                <span>Data Management</span>
+                <span>Cross-team Collaboration</span>
+                <span>Business Operations</span>
+              </div>
+            </div>
+
+            <div class="exp-block reveal-block">
+              <div class="exp-block-header">
+                <div>
+                  <h3>Frontend Developer Intern</h3>
+                  <span class="exp-company">Sagmetic Infotech Pvt. Ltd.</span>
+                </div>
+                <span class="exp-date mono">Mar 2026 - Present</span>
+              </div>
+              <p class="exp-desc">
+                Stipend-based internship during the final semester of MCA - working on
+                live production projects. Translating Figma designs into pixel-accurate,
+                responsive web pages. Hands-on experience with real client work, real
+                deadlines, and real stakes. Where the classroom ended, this began.
+              </p>
+              <div class="exp-tags">
+                <span>HTML / CSS / JS</span>
+                <span>Figma to Code</span>
+                <span>Live Projects</span>
+                <span>Frontend Development</span>
+                <span>Responsive UI</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects -->
+      <div class="work-projects">
+        <div class="work-proj-label">
+          <span class="mono">Projects</span>
+        </div>
+
+        <h2 class="act-heading reveal-line" style="margin-bottom: 4rem;">
+          Things built<br /><em>from nothing.</em>
+        </h2>
+
+        <!-- Project 01 -->
+        <div class="project-row reveal-block">
+          <div class="project-row-number mono">01</div>
+          <div class="project-row-content">
+            <div class="project-row-header">
+              <h3>EMS Pro</h3>
+              <span class="project-type mono">Individual</span>
+              <a href="https://kashish-008.github.io/College-major-project/" target="_blank" rel="noopener noreferrer"
+                class="project-link">
+                Live ↗
+              </a>
+            </div>
+            <p class="project-story">
+              No React. No backend. Just HTML, CSS, and the kind of JavaScript
+              that makes you remember why you started coding. GSAP adds the
+              rhythm - smooth transitions that breathe LocalStorage gives it
+              memory. Responsive because every device deserves the
+              same experience. Proof that constraints aren't
+              limitations - they're the whole point..
+            </p>
+            <div class="project-tech">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+              <span>GSAP</span><span>LocalStorage</span>
+            </div>
+          </div>
+          <div class="project-row-visual">
+            <div class="proj-visual-box">
+              <span class="proj-visual-label">EMS</span>
+              <div class="proj-visual-lines">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="project-divider"></div>
+
+        <!-- Project 02 -->
+        <div class="project-row reveal-block">
+          <div class="project-row-number mono">02</div>
+          <div class="project-row-content">
+            <div class="project-row-header">
+              <h3>SHG Advisors</h3>
+              <span class="project-type mono">Internship</span>
+              <a href="https://kashish-008.github.io/O-Work/SHG-advisors" target="_blank" rel="noopener noreferrer"
+                class="project-link">
+                Live ↗
+              </a>
+            </div>
+            <p class="project-story">
+              A Figma-to-web conversion for SHG Advisors - a strategic consulting firm working with governments,
+              nonprofits, and foundations. Built with pure HTML, CSS, and JavaScript, this responsive page
+              translates a polished design into a functional brand presence. Features dynamic project cards,
+              a client testimonial, and a clean layout that mirrors the original vision. A hands-on lesson in
+              turning static mockups into living code.
+            </p>
+            <div class="project-tech">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+              <span>Figma</span><span>Responsive</span>
+            </div>
+          </div>
+          <div class="project-row-visual">
+            <div class="proj-visual-box">
+              <span class="proj-visual-label">SHG</span>
+              <div class="proj-visual-lines">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="project-divider"></div>
+
+        <!-- Project 03 -->
+        <div class="project-row reveal-block">
+          <div class="project-row-number mono">03</div>
+          <div class="project-row-content">
+            <div class="project-row-header">
+              <h3>DWH</h3>
+              <span class="project-type mono">Internship</span>
+              <a href="https://kashish-008.github.io/O-Work/DWH" target="_blank" rel="noopener noreferrer"
+                class="project-link">
+                Live ↗
+              </a>
+            </div>
+            <p class="project-story">
+              A focused, conversion-driven webpage for a water heater installation service based in Denver.
+              This Figma-to-code project emphasizes clarity and speed - featuring a bold pricing offer,
+              a clear call-to-action for financing, and a responsive layout. Built with semantic HTML,
+              custom CSS, and interactive JavaScript to turn a simple service pitch into a seamless brand experience.
+            </p>
+            <div class="project-tech">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+              <span>Figma</span><span>Responsive</span>
+            </div>
+          </div>
+          <div class="project-row-visual">
+            <div class="proj-visual-box">
+              <span class="proj-visual-label">DWH</span>
+              <div class="proj-visual-lines">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="project-divider"></div>
+
+        <!-- Project 04 -->
+        <div class="project-row reveal-block">
+          <div class="project-row-number mono">04</div>
+          <div class="project-row-content">
+            <div class="project-row-header">
+              <h3>Sundown Studio</h3>
+              <span class="project-type mono">Individual</span>
+              <a href="https://kashish-008.github.io/Practise-projects/Sundown-Studio/" target="_blank"
+                rel="noopener noreferrer" class="project-link">
+                Live ↗
+              </a>
+            </div>
+            <p class="project-story">
+              A multi-disciplinary creative studio delivering end-to-end experiences and environments. This showcase
+              blends smooth scrolling (Locomotive), interactive hover previews, and a Swiper.js testimonial carousel.
+              From loading animation to grid, every element breathes with purpose - proof that great design isn't just
+              seen, it's felt. (Desktop-optimized experience)
+            </p>
+            <div class="project-tech">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+              <span>Locomotive Scroll</span><span>Swiper.js</span><span>SVG</span>
+            </div>
+          </div>
+          <div class="project-row-visual">
+            <div class="proj-visual-box">
+              <span class="proj-visual-label">SS</span>
+              <div class="proj-visual-lines">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ACT IV - CRAFT -->
+    <section class="act act-craft" id="craft">
+
+      <div class="act-label">
+        <span class="mono">Chapter IV---Skills</span>
+      </div>
+
+      <div class="craft-layout">
+
+        <div class="craft-left">
+          <h2 class="act-heading">
+            <span class="reveal-line">The</span>
+            <span class="reveal-line">Arsenal.</span>
+          </h2>
+          <p class="craft-sub reveal-para">
+            Tools aren't the story - they're the vocabulary. Here's the one
+            Kashish speaks fluently, and the ones he's still learning.
+          </p>
+        </div>
+
+        <div class="craft-right">
+
+          <div class="skill-category reveal-block">
+            <div class="skill-cat-label mono">Core - Fluent</div>
+            <div class="skill-bars">
+              <div class="skill-bar-item">
+                <span>HTML5 &amp; CSS3</span>
+                <div class="skill-bar">
+                  <div class="skill-bar-fill" data-width="92"></div>
+                </div>
+              </div>
+              <div class="skill-bar-item">
+                <span>JavaScript (ES6+)</span>
+                <div class="skill-bar">
+                  <div class="skill-bar-fill" data-width="82"></div>
+                </div>
+              </div>
+              <div class="skill-bar-item">
+                <span>React.js</span>
+                <div class="skill-bar">
+                  <div class="skill-bar-fill" data-width="68"></div>
+                </div>
+              </div>
+              <div class="skill-bar-item">
+                <span>GSAP Animations</span>
+                <div class="skill-bar">
+                  <div class="skill-bar-fill" data-width="78"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-category reveal-block">
+            <div class="skill-cat-label mono">Tools - Comfortable</div>
+            <div class="skill-pills-row">
+              <span>Git / GitHub</span>
+              <span>Locomotive Scroll</span>
+              <span>Bootstrap 5</span>
+              <span>Locomotive Scroll</span>
+              <span>Python</span>
+              <span>AOS</span>
+              <span>VS Code</span>
+            </div>
+          </div>
+
+          <div class="skill-category reveal-block">
+            <div class="skill-cat-label mono">Learning - In Progress</div>
+            <div class="skill-pills-row skill-pills-row-dim">
+              <span>Node.js</span>
+              <span>MongoDB</span>
+              <span>Express.js</span>
+              <span>Three.js</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Full-width marquee of skills -->
+      <div class="skill-marquee">
+        <div class="marquee-track">
+          <span>HTML</span><span>·</span>
+          <span>CSS</span><span>·</span>
+          <span>JavaScript</span><span>·</span>
+          <span>React</span><span>·</span>
+          <span>GSAP</span><span>·</span>
+          <span>Git</span><span>·</span>
+          <span>Python</span><span>·</span>
+          <span>AOS</span><span>·</span>
+          <span>HTML</span><span>·</span>
+          <span>CSS</span><span>·</span>
+          <span>JavaScript</span><span>·</span>
+          <span>React</span><span>·</span>
+          <span>GSAP</span><span>·</span>
+          <span>Git</span><span>·</span>
+          <span>Python</span><span>·</span>
+          <span>AOS</span><span>·</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ACT V - MILESTONES -->
+    <section class="act act-milestones" id="milestones">
+
+      <div class="act-label">
+        <span class="mono">Chapter V---Certificate & Achievement</span>
+      </div>
+
+      <div class="milestones-layout">
+
+        <div class="milestones-left">
+          <h2 class="act-heading">
+            <span class="reveal-line">Beyond</span>
+            <span class="reveal-line">the</span>
+            <span class="reveal-line reveal-line-accent">Code.</span>
+          </h2>
+          <p class="milestones-sub reveal-para">
+            Certificates are proof. Achievements are story. Here's both.
+          </p>
+        </div>
+
+        <div class="milestones-right">
+
+          <!-- SIH Achievement (Hero Card) -->
+          <div class="milestone-card milestone-card-hero reveal-block">
+            <div class="milestone-card-header">
+              <span class="milestone-type mono">Team Achievement</span>
+              <span class="milestone-year mono">2025</span>
+            </div>
+            <h3>Smart India Hackathon</h3>
+            <p class="milestone-story">
+              Built a College ERP prototype from scratch. Cleared the
+              presentation round.
+              Made it to prototype demonstration. Four minds, one vision, zero
+              sleep -
+              the kind of pressure that builds character.
+            </p>
+            <div class="milestone-tags">
+              <span>Team of 4</span>
+              <span>ERP Prototype</span>
+              <span>PPT Round </span>
+              <span>Prototype Round </span>
+            </div>
+          </div>
+
+          <!-- Research Paper -->
+          <div class="milestone-card reveal-block">
+            <div class="milestone-card-header">
+              <span class="milestone-type mono">Research Publication</span>
+              <span class="milestone-year mono">Feb 2026</span>
+            </div>
+            <h3>Full Dive in Immersive Virtual Reality</h3>
+            <p class="milestone-story">
+              Research paper presented at the International Conference on
+              "Role of Multidisciplinary & Technology-Led Approach" -
+              Viksit Bharat 2047. Recognized with an award for contribution.
+            </p>
+            <div class="milestone-meta">
+              <span>International Conference</span>
+              <span>Award Received</span>
+            </div>
+          </div>
+
+          <!-- Certificates Grid -->
+          <div class="cert-grid">
+            <div class="cert-card reveal-block">
+              <div class="cert-line"></div>
+              <div class="cert-info">
+                <h4>Git Training</h4>
+                <p>Version control. Branching. Collaboration.</p>
+                <div class="cert-footer">
+                  <span class="cert-date mono">March 2026</span>
+                  <a href="#" class="cert-link mono" data-cert="git">View
+                    Certificate </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="cert-card reveal-block">
+              <div class="cert-line"></div>
+              <div class="cert-info">
+                <h4>JavaScript for Beginners</h4>
+                <p>ES6+, DOM, async - the foundation.</p>
+                <div class="cert-footer">
+                  <span class="cert-date mono">March 2026</span>
+                  <a href="#" class="cert-link mono" data-cert="js">View
+                    Certificate </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="cert-card reveal-block">
+              <div class="cert-line"></div>
+              <div class="cert-info">
+                <h4>International Conference Research Paper</h4>
+                <p>Full Dive in Immersive Virtual Reality - Presented &
+                  Awarded.</p>
+                <div class="cert-footer">
+                  <span class="cert-date mono">February 2026</span>
+                  <a href="#" class="cert-link mono" data-cert="research">View
+                    Certificate </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="cert-card reveal-block">
+              <div class="cert-line"></div>
+              <div class="cert-info">
+                <h4>Introduction to Front End Development</h4>
+                <p>HTML, CSS, React basics - certified.</p>
+                <div class="cert-footer">
+                  <span class="cert-date mono">March 2026</span>
+                  <a href="#" class="cert-link mono" data-cert="frontend">View
+                    Certificate </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ACT VI - SIGNAL -->
+    <section class="act act-signal" id="signal">
+
+      <div class="act-label">
+        <span class="mono">Chapter VI---Contact Me</span>
+      </div>
+
+      <div class="signal-layout">
+
+        <div class="signal-heading-wrap">
+          <h2 class="signal-heading">
+            <span class="reveal-line">Send</span>
+            <span class="reveal-line">the</span>
+            <span class="reveal-line reveal-line-accent">Signal.</span>
+          </h2>
+          <p class="signal-sub reveal-para">
+            If you have a project, a role, or a conversation worth having - the
+            line is open. No spam. No bots. Just Kashish.
+          </p>
+        </div>
+
+        <div class="signal-links">
+          <a href="mailto:abhimanhas2132@gmail.com" class="signal-link reveal-block">
+            <div class="signal-link-inner">
+              <span class="signal-link-type mono">Email</span>
+              <span class="signal-link-value">abhimanhas2132@gmail.com</span>
+            </div>
+            <span class="signal-arrow">↗</span>
+          </a>
+
+          <a href="tel:+919781149520" class="signal-link reveal-block">
+            <div class="signal-link-inner">
+              <span class="signal-link-type mono">Phone</span>
+              <span class="signal-link-value">+91 97811 49520</span>
+            </div>
+            <span class="signal-arrow">↗</span>
+          </a>
+
+          <a href="https://linkedin.com/in/kashish54" target="_blank" rel="noopener noreferrer"
+            class="signal-link reveal-block">
+            <div class="signal-link-inner">
+              <span class="signal-link-type mono">LinkedIn</span>
+              <span class="signal-link-value">linkedin.com/in/kashisht008</span>
+            </div>
+            <span class="signal-arrow">↗</span>
+          </a>
+
+          <a href="https://github.com/kashish-008" target="_blank" rel="noopener noreferrer"
+            class="signal-link reveal-block">
+            <div class="signal-link-inner">
+              <span class="signal-link-type mono">GitHub</span>
+              <span class="signal-link-value">github.com/kashish-008</span>
+            </div>
+            <span class="signal-arrow">↗</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Final credit frame -->
+      <div class="signal-credits">
+        <div class="credits-left">
+          <span class="mono small ">Kashish Thakur · 2026</span>
+        </div>
+        <div class="credits-center mono small">
+          Designed &amp; Developed with obsession
+          <p>Made with curiosity, caffeine, and clean code.</p>
+        </div>
+        <div class="credits-right mono small">
+          Punjab · India
+        </div>
+      </div>
+
+    </section>
+  </div> <!-- End #app-content -->
+
+  <!-- Certificate Modal -->
+  <div class="cert-modal" id="certModal">
+    <div class="cert-modal-overlay"></div>
+    <div class="cert-modal-container">
+      <div class="cert-modal-header">
+        <span class="cert-modal-title mono">Certificate</span>
+        <button class="cert-modal-close" id="closeModal" aria-label="Close">✕</button>
+      </div>
+      <div class="cert-modal-body">
+        <iframe id="certIframe"></iframe>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
