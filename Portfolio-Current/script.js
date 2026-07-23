@@ -91,7 +91,7 @@ function setupCursor() {
   document.addEventListener("mouseover", (e) => {
     if (
       e.target.closest(
-        "a, button, .signal-link, .project-row, .edu-card, .skill-pills-row span .credits-left",
+        "a, button, .signal-link, .project-row, .edu-card, .skill-pills-row span, .credits-left",
       )
     ) {
       cursor.classList.add("hovering");
@@ -100,7 +100,7 @@ function setupCursor() {
   document.addEventListener("mouseout", (e) => {
     if (
       e.target.closest(
-        "a, button, .signal-link, .project-row, .edu-card, .skill-pills-row span .credits-left",
+        "a, button, .signal-link, .project-row, .edu-card, .skill-pills-row span, .credits-left",
       )
     ) {
       cursor.classList.remove("hovering");
