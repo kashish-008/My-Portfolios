@@ -111,6 +111,349 @@
   }
 }
 
+/* =============================================
+   MOBILE BOTTOM PILL NAV — hidden on desktop
+   ============================================= */
+.mobile-pill-nav {
+  display: none;
+}
+
+/* Mobile: 768px and below — show pill nav */
+@media (max-width: 768px) {
+  /* ── Top nav: center the logo, hide chapters & actions ── */
+  .nav {
+    justify-content: center;
+    padding: 0 20px;
+    transform: none !important;
+  }
+
+  .nav-chapters {
+    display: none !important;
+  }
+
+  .nav-actions {
+    display: none !important;
+  }
+
+  /* ── Bottom Pill Nav ── */
+  .mobile-pill-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.25rem;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+
+    /* iOS glass pill */
+    background: rgba(20, 18, 15, 0.65);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    padding: 8px 20px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      0 2px 8px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    min-width: 240px;
+  }
+
+  .light-theme .mobile-pill-nav {
+    background: rgba(250, 248, 245, 0.72);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  /* ── Sliding Glass Indicator ── */
+  .pill-indicator {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: calc(100% - 10px);
+    border-radius: 80px;
+    /* iOS frosted glass look */
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+      0 2px 12px rgba(0, 0, 0, 0.2);
+    /* Width & X set by JS */
+    width: 0;
+    transform: translateX(0);
+    pointer-events: none;
+    opacity: 0;
+    /* Dragging: no transition for instant finger tracking */
+    transition: opacity 0.2s ease;
+    will-change: transform, width;
+    z-index: 0;
+  }
+
+  .light-theme .pill-indicator {
+    background: rgba(0, 0, 0, 0.07);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Active indicator: fade in */
+  .pill-indicator.is-active {
+    opacity: 1;
+  }
+
+  /* Snapping: spring transition kicks in when finger lifts */
+  .pill-indicator.is-snapping {
+    /* iOS spring — linear() simulates real spring physics */
+    transition:
+      transform 0.5s
+        linear(
+          0,
+          0.009,
+          0.035,
+          0.078,
+          0.136,
+          0.208,
+          0.292,
+          0.385,
+          0.484,
+          0.584,
+          0.68,
+          0.769,
+          0.847,
+          0.909,
+          0.955,
+          0.986,
+          1.003,
+          1.009,
+          1.007,
+          1.002,
+          0.999,
+          1
+        ),
+      width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.2s ease;
+  }
+
+  /* ── Item press/bounce ── */
+  @keyframes iosBounce {
+    0% {
+      transform: scale(0.88);
+    }
+    45% {
+      transform: scale(1.07);
+    }
+    70% {
+      transform: scale(0.97);
+    }
+    85% {
+      transform: scale(1.02);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .pill-item.is-pressed {
+    transform: scale(0.88);
+    transition: transform 0.1s ease;
+    color: var(--white);
+  }
+
+  .pill-item.is-bouncing {
+    animation: iosBounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  /* Hire pressed → gold */
+  #pillHireMe.is-pressed,
+  #pillHireMe.is-bouncing {
+    color: var(--gold);
+  }
+
+  /* ── iOS Liquid Glass Ripple keyframe ── */
+  @keyframes glassRipple {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 1;
+    }
+    60% {
+      opacity: 0.85;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+  }
+
+  .pill-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 8px 18px;
+    border-radius: 80px;
+    border: none;
+    background: transparent;
+    color: var(--white-dim);
+    cursor: pointer;
+    transition:
+      color 0.22s ease,
+      transform 0.1s ease;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* The glass ripple element — injected by JS at touch coords */
+  .glass-ripple {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    /* Size is set by JS relative to element */
+    width: var(--ripple-size, 120px);
+    height: var(--ripple-size, 120px);
+    left: var(--ripple-x, 50%);
+    top: var(--ripple-y, 50%);
+    transform: translate(-50%, -50%) scale(0);
+
+    /* iOS glass lens gradient:
+       - Bright specular glare spot (top-left, convex lens highlight)
+       - Transparent clear center
+       - Subtle inner shadow ring (concave edge)
+       - Soft outer diffusion ring
+    */
+    background: radial-gradient(
+      circle at 35% 32%,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.18) 22%,
+      rgba(255, 255, 255, 0.04) 45%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.06) 75%,
+      rgba(0, 0, 0, 0.12) 88%,
+      transparent 100%
+    );
+
+    /* Outer glass edge ring */
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+      0 0 0 1px rgba(0, 0, 0, 0.08);
+
+    animation: glassRipple 0.62s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+    z-index: 10;
+  }
+
+  /* Light theme — invert the lens tones slightly */
+  .light-theme .glass-ripple {
+    background: radial-gradient(
+      circle at 35% 32%,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.3) 20%,
+      rgba(255, 255, 255, 0.06) 42%,
+      transparent 58%,
+      rgba(0, 0, 0, 0.04) 72%,
+      rgba(0, 0, 0, 0.09) 86%,
+      transparent 100%
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Gold tint for Hire button */
+  #pillHireMe .glass-ripple {
+    background: radial-gradient(
+      circle at 35% 32%,
+      rgba(255, 230, 140, 0.7) 0%,
+      rgba(201, 168, 76, 0.25) 25%,
+      rgba(201, 168, 76, 0.06) 46%,
+      transparent 62%,
+      rgba(0, 0, 0, 0.06) 76%,
+      rgba(0, 0, 0, 0.1) 88%,
+      transparent 100%
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(201, 168, 76, 0.3),
+      0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  .pill-item:active {
+    transform: scale(0.93);
+    transition: transform 0.08s ease;
+  }
+
+  .pill-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pill-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pill-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: inherit;
+  }
+
+  /* Hire — gold accent */
+  #pillHireMe {
+    color: var(--gold);
+  }
+
+  #pillHireMe:hover,
+  #pillHireMe:focus-visible {
+    color: var(--gold);
+  }
+
+  /* Theme toggle icons */
+  .pill-sun-icon {
+    display: none;
+  }
+
+  .pill-moon-icon {
+    display: block;
+  }
+
+  .light-theme .pill-sun-icon {
+    display: block;
+  }
+
+  .light-theme .pill-moon-icon {
+    display: none;
+  }
+
+  /* Theme & Resume use default white-hover drop (already set on ::before) */
+
+  /* Dividers between pill items */
+  .pill-item + .pill-item {
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .light-theme .pill-item + .pill-item {
+    border-left-color: rgba(0, 0, 0, 0.08);
+  }
+}
+
 /* Mobile: 530px and below */
 @media (max-width: 530px) {
   .scroll-prompt-track {
@@ -121,16 +464,19 @@
     font-size: 8rem;
   }
 
-  .nav {
-    padding: 0 20px;
+  /* pill nav adjustments for small screens */
+  .mobile-pill-nav {
+    bottom: 18px;
+    padding: 6px 14px;
+    min-width: 220px;
+  }
+
+  .pill-item {
+    padding: 7px 14px;
   }
 
   .nav-actions {
-    display: flex;
-  }
-
-  .nav-actions .nav-cta {
-    display: none;
+    display: none !important;
   }
 
   .act-open {
@@ -276,7 +622,6 @@
 
 /* Accessibility: Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {

@@ -1,7 +1,7 @@
 window.addEventListener("load", init);
 
 function init() {
-  runLoader(); 
+  runLoader();
 }
 
 /* ======== LOADER ======= */
@@ -42,6 +42,227 @@ function startPage() {
   setupChapterNav();
   setupCertificates();
   setupTheme();
+  setupPillHover();
+}
+
+/* ============================================================
+   PILL — iOS Liquid Glass Ripple (shared helper)
+   ============================================================ */
+function spawnRipple(el, clientX, clientY) {
+  const rect = el.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  const size = Math.max(rect.width, rect.height) * 2.4;
+
+  const ripple = document.createElement("span");
+  ripple.classList.add("glass-ripple");
+  ripple.style.setProperty("--ripple-x", x + "px");
+  ripple.style.setProperty("--ripple-y", y + "px");
+  ripple.style.setProperty("--ripple-size", size + "px");
+  el.appendChild(ripple);
+  ripple.addEventListener("animationend", () => ripple.remove(), {
+    once: true,
+  });
+}
+
+/* ===== PILL ===== */
+function setupPillHover() {
+  const nav = document.getElementById("mobilePillNav");
+  const indicator = document.getElementById("pillIndicator");
+  if (!nav || !indicator) return;
+
+  const items = Array.from(nav.querySelectorAll(".pill-item"));
+  if (!items.length) return;
+
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let currentIdx = 0;
+  let navRect = null;
+  let itemRects = [];
+  let didAction = false; // guard against double-fire
+
+  /* ── Helpers ── */
+  function refreshRects() {
+    navRect = nav.getBoundingClientRect();
+    itemRects = items.map((el) => el.getBoundingClientRect());
+  }
+
+  function clamp(v, lo, hi) {
+    return Math.max(lo, Math.min(hi, v));
+  }
+
+  function idxAtX(clientX) {
+    if (!navRect) return 0;
+    const rx = clientX - navRect.left;
+    // Find which item the finger is inside
+    for (let i = 0; i < itemRects.length; i++) {
+      const r = itemRects[i];
+      if (rx >= r.left - navRect.left && rx <= r.right - navRect.left) return i;
+    }
+    // Clamp to edges
+    return clientX < navRect.left + navRect.width / 2 ? 0 : items.length - 1;
+  }
+
+  function placeIndicator(idx, smooth) {
+    if (!navRect || !itemRects[idx]) return;
+    const r = itemRects[idx];
+    const x = r.left - navRect.left;
+    const w = r.width;
+
+    if (smooth) {
+      indicator.classList.add("is-snapping");
+    } else {
+      indicator.classList.remove("is-snapping");
+    }
+    indicator.style.transform = `translateX(${x}px)`;
+    indicator.style.width = w + "px";
+  }
+
+  function pressItem(idx) {
+    items.forEach((item, i) => {
+      item.classList.remove("is-pressed", "is-bouncing");
+      if (i === idx) item.classList.add("is-pressed");
+    });
+  }
+
+  function bounceItem(idx) {
+    items.forEach((item) => item.classList.remove("is-pressed", "is-bouncing"));
+    const el = items[idx];
+    el.classList.add("is-bouncing");
+    el.addEventListener(
+      "animationend",
+      () => el.classList.remove("is-bouncing"),
+      { once: true },
+    );
+  }
+
+  function triggerItem(idx, touch) {
+    if (didAction) return;
+    didAction = true;
+
+    const item = items[idx];
+    bounceItem(idx);
+    spawnRipple(item, touch.clientX, touch.clientY);
+
+    // Trigger action — handled differently per item type
+    if (item.tagName === "BUTTON") {
+      // Theme toggle: fire its own click handler
+      item.click();
+    } else if (item.tagName === "A") {
+      // Link: open href
+      const href = item.getAttribute("href");
+      const target = item.getAttribute("target");
+      if (href && href !== "#") {
+        if (target === "_blank") {
+          window.open(href, "_blank", "noopener,noreferrer");
+        } else {
+          window.location.href = href;
+        }
+      }
+    }
+  }
+
+  /* ── Touch Events ── */
+  nav.addEventListener(
+    "touchstart",
+    (e) => {
+      // Only start on pill-item touches; ignore padding area touches
+      const touch = e.changedTouches[0];
+      refreshRects();
+      startX = touch.clientX;
+      startY = touch.clientY;
+      isDragging = true;
+      didAction = false;
+      currentIdx = idxAtX(touch.clientX);
+
+      // Show indicator instantly at touched item
+      placeIndicator(currentIdx, false);
+      indicator.classList.add("is-active");
+      pressItem(currentIdx);
+      spawnRipple(items[currentIdx], touch.clientX, touch.clientY);
+    },
+    { passive: true },
+  );
+
+  nav.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!isDragging) return;
+      const touch = e.changedTouches[0];
+      const newIdx = idxAtX(touch.clientX);
+
+      // Move indicator INSTANTLY with finger (no spring during drag)
+      placeIndicator(newIdx, false);
+
+      // Switch pressed item if finger moved to a different one
+      if (newIdx !== currentIdx) {
+        currentIdx = newIdx;
+        pressItem(currentIdx);
+      }
+    },
+    { passive: true },
+  );
+
+  nav.addEventListener(
+    "touchend",
+    (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+
+      const touch = e.changedTouches[0];
+      const finalIdx = idxAtX(touch.clientX);
+      currentIdx = finalIdx;
+
+      // Spring-snap the indicator to final item
+      placeIndicator(finalIdx, true);
+
+      // Fade out indicator after spring settles
+      setTimeout(() => {
+        indicator.classList.remove("is-active", "is-snapping");
+      }, 600);
+
+      // Trigger item action
+      triggerItem(finalIdx, touch);
+    },
+    { passive: true },
+  );
+
+  nav.addEventListener(
+    "touchcancel",
+    () => {
+      isDragging = false;
+      items.forEach((item) =>
+        item.classList.remove("is-pressed", "is-bouncing"),
+      );
+      indicator.classList.remove("is-active", "is-snapping");
+    },
+    { passive: true },
+  );
+
+  /* ── Mouse fallback for desktop testing ── */
+  nav.addEventListener("mousedown", (e) => {
+    const target = e.target.closest(".pill-item");
+    if (!target) return;
+    refreshRects();
+    const idx = items.indexOf(target);
+    if (idx < 0) return;
+    placeIndicator(idx, false);
+    indicator.classList.add("is-active");
+    pressItem(idx);
+    spawnRipple(target, e.clientX, e.clientY);
+
+    const onUp = () => {
+      placeIndicator(idx, true);
+      setTimeout(
+        () => indicator.classList.remove("is-active", "is-snapping"),
+        600,
+      );
+      bounceItem(idx);
+      document.removeEventListener("mouseup", onUp);
+    };
+    document.addEventListener("mouseup", onUp);
+  });
 }
 
 /* ====== LENI ====== */
@@ -119,33 +340,37 @@ function setupCursor() {
 function setupNav() {
   const nav = document.getElementById("nav");
   let lastScrollY = window.scrollY;
-  const threshold = 15; 
+  const threshold = 15;
 
-  window.addEventListener("scroll", () => {
-    const currentScrollY = window.scrollY;
+  window.addEventListener(
+    "scroll",
+    () => {
+      const currentScrollY = window.scrollY;
 
-    if (currentScrollY > 60) {
-      nav.classList.add("scrolled");
-    } else {
-      nav.classList.remove("scrolled");
-      nav.classList.remove("nav-hidden");
-      lastScrollY = currentScrollY;
-      return;
-    }
-
-    const diff = currentScrollY - lastScrollY;
-
-    if (Math.abs(diff) >= threshold) {
-      if (diff > 0) {
-        // Scrolling down -> hide
-        nav.classList.add("nav-hidden");
+      if (currentScrollY > 60) {
+        nav.classList.add("scrolled");
       } else {
-        // Scrolling up -> show
+        nav.classList.remove("scrolled");
         nav.classList.remove("nav-hidden");
+        lastScrollY = currentScrollY;
+        return;
       }
-      lastScrollY = currentScrollY;
-    }
-  }, { passive: true });
+
+      const diff = currentScrollY - lastScrollY;
+
+      if (Math.abs(diff) >= threshold) {
+        if (diff > 0) {
+          // Scrolling down -> hide
+          nav.classList.add("nav-hidden");
+        } else {
+          // Scrolling up -> show
+          nav.classList.remove("nav-hidden");
+        }
+        lastScrollY = currentScrollY;
+      }
+    },
+    { passive: true },
+  );
 }
 
 /*===== HERO ANIMATION - ACT I ======= */
@@ -368,7 +593,7 @@ function setupCertificates() {
     frontend: "certificates/frontend-certificate.pdf",
     research: "certificates/research-paper-certificate.pdf",
     resume: "certificates/resume.pdf",
-    cv: "certificates/Kashish Thakur - CV.pdf"
+    cv: "certificates/Kashish Thakur - CV.pdf",
   };
 
   // Open modal on link click
@@ -389,7 +614,7 @@ function setupCertificates() {
     modal.classList.remove("active");
     modal.setAttribute("aria-hidden", "true");
     setTimeout(() => {
-      iframe.src = ""; 
+      iframe.src = "";
     }, 300);
   }
 
@@ -414,9 +639,9 @@ function setupCertificates() {
 /* ===== THEME TOGGLE ====== */
 function setupTheme() {
   const toggle = document.getElementById("themeToggle");
+  const mobileToggle = document.getElementById("mobileThemeToggle");
   const appContent = document.getElementById("app-content");
-  if (!toggle || !appContent) return;
-
+  if (!appContent) return;
   let isAnimating = false;
 
   function applyTheme(theme) {
@@ -429,23 +654,25 @@ function setupTheme() {
     }
   }
 
-  toggle.addEventListener("click", () => {
+  function handleThemeToggle() {
     if (isAnimating) return;
     isAnimating = true;
 
-    const isCurrentlyLight = document.documentElement.classList.contains("light-theme");
+    const isCurrentlyLight =
+      document.documentElement.classList.contains("light-theme");
     const targetTheme = isCurrentlyLight ? "dark" : "light";
     const currentScrollY = window.scrollY;
 
     const clone = appContent.cloneNode(true);
     clone.id = "app-content-clone";
-    
+
     const elementsWithId = clone.querySelectorAll("[id]");
     elementsWithId.forEach((el) => el.removeAttribute("id"));
 
     const container = document.createElement("div");
     container.id = "theme-clone-container";
-    container.className = targetTheme === "light" ? "light-theme" : "dark-theme";
+    container.className =
+      targetTheme === "light" ? "light-theme" : "dark-theme";
 
     clone.style.position = "absolute";
     clone.style.top = "0";
@@ -465,26 +692,31 @@ function setupTheme() {
     document.body.appendChild(lightLeak);
 
     // 1. Vintage Projector Jitter Effect on main page content
-    gsap.timeline()
-      .to(appContent, {
-        y: () => Math.random() * 6 - 3,
-        x: () => Math.random() * 4 - 2,
-        duration: 0.04,
-        repeat: 5,
-        yoyo: true,
-        onComplete: () => {
-          gsap.set(appContent, { clearProps: "transform" });
-        }
-      });
+    gsap.timeline().to(appContent, {
+      y: () => Math.random() * 6 - 3,
+      x: () => Math.random() * 4 - 2,
+      duration: 0.04,
+      repeat: 5,
+      yoyo: true,
+      onComplete: () => {
+        gsap.set(appContent, { clearProps: "transform" });
+      },
+    });
 
     // 2. Projector Light Leak Flash (warm amber flare)
-    gsap.timeline()
+    gsap
+      .timeline()
       .to(lightLeak, { opacity: 0.8, duration: 0.2, ease: "power2.out" })
-      .to(lightLeak, { opacity: 0, duration: 0.7, ease: "power2.in", onComplete: () => lightLeak.remove() });
+      .to(lightLeak, {
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.in",
+        onComplete: () => lightLeak.remove(),
+      });
 
     // 3. Coordinated Film Strip Roll Sweep
     const viewportHeight = window.innerHeight;
-    
+
     gsap.set(container, { clipPath: "inset(0% 0% 100% 0%)" });
     gsap.set(divider, { y: 0 });
 
@@ -494,19 +726,30 @@ function setupTheme() {
         container.remove();
         divider.remove();
         isAnimating = false;
-      }
+      },
     });
 
-    timeline.to(container, {
-      clipPath: "inset(0% 0% 0% 0%)",
-      duration: 1.25,
-      ease: "power3.inOut"
-    }, 0);
+    timeline.to(
+      container,
+      {
+        clipPath: "inset(0% 0% 0% 0%)",
+        duration: 1.25,
+        ease: "power3.inOut",
+      },
+      0,
+    );
 
-    timeline.to(divider, {
-      y: viewportHeight,
-      duration: 1.25,
-      ease: "power3.inOut"
-    }, 0);
-  });
+    timeline.to(
+      divider,
+      {
+        y: viewportHeight,
+        duration: 1.25,
+        ease: "power3.inOut",
+      },
+      0,
+    );
+  }
+
+  if (toggle) toggle.addEventListener("click", handleThemeToggle);
+  if (mobileToggle) mobileToggle.addEventListener("click", handleThemeToggle);
 }
