@@ -111,16 +111,13 @@
   }
 }
 
-/* =============================================
-   MOBILE BOTTOM PILL NAV — hidden on desktop
-   ============================================= */
+/* ===== MOBILE BOTTOM PILL NAV ======= */
 .mobile-pill-nav {
   display: none;
 }
 
 /* Mobile: 768px and below — show pill nav */
 @media (max-width: 768px) {
-  /* ── Top nav: center the logo, hide chapters & actions ── */
   .nav {
     justify-content: center;
     padding: 0 20px;
@@ -135,7 +132,6 @@
     display: none !important;
   }
 
-  /* ── Bottom Pill Nav ── */
   .mobile-pill-nav {
     display: flex;
     align-items: center;
@@ -147,7 +143,6 @@
     transform: translateX(-50%);
     z-index: 200;
 
-    /* iOS glass pill */
     background: rgba(20, 18, 15, 0.65);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -170,14 +165,12 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.7);
   }
 
-  /* ── Sliding Glass Indicator ── */
   .pill-indicator {
     position: absolute;
     top: 5px;
     left: 0;
     height: calc(100% - 10px);
     border-radius: 80px;
-    /* iOS frosted glass look */
     background: rgba(255, 255, 255, 0.13);
     backdrop-filter: blur(12px) saturate(160%);
     -webkit-backdrop-filter: blur(12px) saturate(160%);
@@ -191,7 +184,6 @@
     transform: translateX(0);
     pointer-events: none;
     opacity: 0;
-    /* Dragging: no transition for instant finger tracking */
     transition: opacity 0.2s ease;
     will-change: transform, width;
     z-index: 0;
@@ -206,14 +198,11 @@
       0 2px 12px rgba(0, 0, 0, 0.08);
   }
 
-  /* Active indicator: fade in */
   .pill-indicator.is-active {
     opacity: 1;
   }
 
-  /* Snapping: spring transition kicks in when finger lifts */
   .pill-indicator.is-snapping {
-    /* iOS spring — linear() simulates real spring physics */
     transition:
       transform 0.5s
         linear(
@@ -244,7 +233,6 @@
       opacity 0.2s ease;
   }
 
-  /* ── Item press/bounce ── */
   @keyframes iosBounce {
     0% {
       transform: scale(0.88);
@@ -273,13 +261,11 @@
     animation: iosBounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
-  /* Hire pressed → gold */
   #pillHireMe.is-pressed,
   #pillHireMe.is-bouncing {
     color: var(--gold);
   }
 
-  /* ── iOS Liquid Glass Ripple keyframe ── */
   @keyframes glassRipple {
     0% {
       transform: translate(-50%, -50%) scale(0);
@@ -317,24 +303,16 @@
     isolation: isolate;
   }
 
-  /* The glass ripple element — injected by JS at touch coords */
   .glass-ripple {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    /* Size is set by JS relative to element */
     width: var(--ripple-size, 120px);
     height: var(--ripple-size, 120px);
     left: var(--ripple-x, 50%);
     top: var(--ripple-y, 50%);
     transform: translate(-50%, -50%) scale(0);
 
-    /* iOS glass lens gradient:
-       - Bright specular glare spot (top-left, convex lens highlight)
-       - Transparent clear center
-       - Subtle inner shadow ring (concave edge)
-       - Soft outer diffusion ring
-    */
     background: radial-gradient(
       circle at 35% 32%,
       rgba(255, 255, 255, 0.55) 0%,
@@ -346,7 +324,6 @@
       transparent 100%
     );
 
-    /* Outer glass edge ring */
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.22),
       0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -355,7 +332,6 @@
     z-index: 10;
   }
 
-  /* Light theme — invert the lens tones slightly */
   .light-theme .glass-ripple {
     background: radial-gradient(
       circle at 35% 32%,
@@ -372,7 +348,6 @@
       0 0 0 1px rgba(0, 0, 0, 0.05);
   }
 
-  /* Gold tint for Hire button */
   #pillHireMe .glass-ripple {
     background: radial-gradient(
       circle at 35% 32%,
@@ -415,7 +390,6 @@
     color: inherit;
   }
 
-  /* Hire — gold accent */
   #pillHireMe {
     color: var(--gold);
   }
@@ -425,7 +399,6 @@
     color: var(--gold);
   }
 
-  /* Theme toggle icons */
   .pill-sun-icon {
     display: none;
   }
@@ -442,9 +415,6 @@
     display: none;
   }
 
-  /* Theme & Resume use default white-hover drop (already set on ::before) */
-
-  /* Dividers between pill items */
   .pill-item + .pill-item {
     border-left: 1px solid rgba(255, 255, 255, 0.08);
   }
@@ -464,7 +434,6 @@
     font-size: 8rem;
   }
 
-  /* pill nav adjustments for small screens */
   .mobile-pill-nav {
     bottom: 18px;
     padding: 6px 14px;

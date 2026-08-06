@@ -45,9 +45,7 @@ function startPage() {
   setupPillHover();
 }
 
-/* ============================================================
-   PILL — iOS Liquid Glass Ripple (shared helper)
-   ============================================================ */
+/* ====== PILL ===== */
 function spawnRipple(el, clientX, clientY) {
   const rect = el.getBoundingClientRect();
   const x = clientX - rect.left;
@@ -65,7 +63,6 @@ function spawnRipple(el, clientX, clientY) {
   });
 }
 
-/* ===== PILL ===== */
 function setupPillHover() {
   const nav = document.getElementById("mobilePillNav");
   const indicator = document.getElementById("pillIndicator");
@@ -80,9 +77,8 @@ function setupPillHover() {
   let currentIdx = 0;
   let navRect = null;
   let itemRects = [];
-  let didAction = false; // guard against double-fire
+  let didAction = false;
 
-  /* ── Helpers ── */
   function refreshRects() {
     navRect = nav.getBoundingClientRect();
     itemRects = items.map((el) => el.getBoundingClientRect());
@@ -95,12 +91,12 @@ function setupPillHover() {
   function idxAtX(clientX) {
     if (!navRect) return 0;
     const rx = clientX - navRect.left;
-    // Find which item the finger is inside
+
     for (let i = 0; i < itemRects.length; i++) {
       const r = itemRects[i];
       if (rx >= r.left - navRect.left && rx <= r.right - navRect.left) return i;
     }
-    // Clamp to edges
+
     return clientX < navRect.left + navRect.width / 2 ? 0 : items.length - 1;
   }
 
@@ -145,12 +141,9 @@ function setupPillHover() {
     bounceItem(idx);
     spawnRipple(item, touch.clientX, touch.clientY);
 
-    // Trigger action — handled differently per item type
     if (item.tagName === "BUTTON") {
-      // Theme toggle: fire its own click handler
       item.click();
     } else if (item.tagName === "A") {
-      // Link: open href
       const href = item.getAttribute("href");
       const target = item.getAttribute("target");
       if (href && href !== "#") {
@@ -163,11 +156,9 @@ function setupPillHover() {
     }
   }
 
-  /* ── Touch Events ── */
   nav.addEventListener(
     "touchstart",
     (e) => {
-      // Only start on pill-item touches; ignore padding area touches
       const touch = e.changedTouches[0];
       refreshRects();
       startX = touch.clientX;
@@ -176,7 +167,6 @@ function setupPillHover() {
       didAction = false;
       currentIdx = idxAtX(touch.clientX);
 
-      // Show indicator instantly at touched item
       placeIndicator(currentIdx, false);
       indicator.classList.add("is-active");
       pressItem(currentIdx);
@@ -192,10 +182,8 @@ function setupPillHover() {
       const touch = e.changedTouches[0];
       const newIdx = idxAtX(touch.clientX);
 
-      // Move indicator INSTANTLY with finger (no spring during drag)
       placeIndicator(newIdx, false);
 
-      // Switch pressed item if finger moved to a different one
       if (newIdx !== currentIdx) {
         currentIdx = newIdx;
         pressItem(currentIdx);
@@ -214,15 +202,12 @@ function setupPillHover() {
       const finalIdx = idxAtX(touch.clientX);
       currentIdx = finalIdx;
 
-      // Spring-snap the indicator to final item
       placeIndicator(finalIdx, true);
 
-      // Fade out indicator after spring settles
       setTimeout(() => {
         indicator.classList.remove("is-active", "is-snapping");
       }, 600);
 
-      // Trigger item action
       triggerItem(finalIdx, touch);
     },
     { passive: true },
@@ -240,7 +225,6 @@ function setupPillHover() {
     { passive: true },
   );
 
-  /* ── Mouse fallback for desktop testing ── */
   nav.addEventListener("mousedown", (e) => {
     const target = e.target.closest(".pill-item");
     if (!target) return;
