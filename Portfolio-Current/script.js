@@ -199,14 +199,32 @@ function setupPillHover() {
       isDragging = false;
 
       const touch = e.changedTouches[0];
+
+      // KEY FIX: only act if finger lifted INSIDE the pill nav
+      const inside =
+        touch.clientX >= navRect.left &&
+        touch.clientX <= navRect.right &&
+        touch.clientY >= navRect.top &&
+        touch.clientY <= navRect.bottom;
+
+      if (!inside) {
+        // Finger slid out -cancel everything, no action
+        items.forEach((item) =>
+          item.classList.remove("is-pressed", "is-bouncing"),
+        );
+        indicator.classList.remove("is-active", "is-snapping");
+        return;
+      }
+
       const finalIdx = idxAtX(touch.clientX);
       currentIdx = finalIdx;
 
       placeIndicator(finalIdx, true);
 
-      setTimeout(() => {
-        indicator.classList.remove("is-active", "is-snapping");
-      }, 600);
+      setTimeout(
+        () => indicator.classList.remove("is-active", "is-snapping"),
+        600,
+      );
 
       triggerItem(finalIdx, touch);
     },
@@ -224,7 +242,6 @@ function setupPillHover() {
     },
     { passive: true },
   );
-
   nav.addEventListener("mousedown", (e) => {
     const target = e.target.closest(".pill-item");
     if (!target) return;
