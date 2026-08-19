@@ -103,8 +103,9 @@ function setupPillHover() {
   function placeIndicator(idx, smooth) {
     if (!navRect || !itemRects[idx]) return;
     const r = itemRects[idx];
-    const x = r.left - navRect.left;
-    const w = r.width;
+    const scale = navRect.width / nav.offsetWidth || 1;
+    const x = (r.left - navRect.left) / scale;
+    const w = r.width / scale;
 
     if (smooth) {
       indicator.classList.add("is-snapping");
@@ -113,6 +114,13 @@ function setupPillHover() {
     }
     indicator.style.transform = `translateX(${x}px)`;
     indicator.style.width = w + "px";
+  }
+
+  function slideTo(idx) {
+    currentIdx = idx;
+    refreshRects();
+    placeIndicator(idx, true);
+    setTimeout(() => indicator.classList.remove("is-snapping"), 600);
   }
 
   function pressItem(idx) {
@@ -340,6 +348,7 @@ function setupCursor() {
 /* =======  NAV - scrolled state ===== */
 function setupNav() {
   const nav = document.getElementById("nav");
+  const pillNav = document.getElementById("mobilePillNav");
   let lastScrollY = window.scrollY;
   const threshold = 15;
 
@@ -354,6 +363,17 @@ function setupNav() {
         nav.classList.remove("scrolled");
         nav.classList.remove("nav-hidden");
         lastScrollY = currentScrollY;
+        }
+      
+    if (pillNav) {
+      if (currentScrollY > 60) {
+        pillNav.classList.add("scrolled");
+      } else {
+        pillNav.classList.remove("scrolled");
+      }
+    }
+
+    if (currentScrollY <= 60) {
         return;
       }
 
