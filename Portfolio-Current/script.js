@@ -614,7 +614,7 @@ function setupCertificates() {
     frontend: "certificates/frontend-certificate.pdf",
     research: "certificates/research-paper-certificate.pdf",
     resume: "certificates/resume.pdf",
-    cv: "certificates/Kashish Thakur - CV.pdf",
+    cv: "certificates/Kashish-Frontend-Developer-Resume.pdf",
   };
 
   // Open modal on link click
